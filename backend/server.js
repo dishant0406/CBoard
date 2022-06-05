@@ -2,8 +2,9 @@ const express = require('express')
 const app = express()
 
 const server = require('http').createServer(app)
-const io = require('socket.io')(server)
+const { Server } = require('socket.io')
 
+const io = new Server(server)
 
 
 // Middleware
@@ -13,6 +14,10 @@ app.get('/', (req, res) => {
 
   res.send('hello from simple server :)')
 
+})
+
+io.on('connection', (socket) => {
+  console.log('user connected')
 })
 
 // Server
