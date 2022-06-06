@@ -1,7 +1,7 @@
 import React from 'react'
 import rough from 'roughjs';
 
-const WhiteBoard = ({canvasRef, ctxRef, elements, setElements, tool}) => {
+const WhiteBoard = ({canvasRef, ctxRef, elements, setElements, tool, textcolor}) => {
 
   const [drawing, setDrawing] = React.useState(false);
 
@@ -13,8 +13,17 @@ const WhiteBoard = ({canvasRef, ctxRef, elements, setElements, tool}) => {
     canvas.width = window.innerWidth * 2;
     const ctx = canvas.getContext('2d');
 
+    ctx.strokeStyle = textcolor;
+    ctx.lineWidth = 2;
+    ctx.lineCap ='round';
+
     ctxRef.current = ctx;
   },[])
+
+  React.useEffect(() => {
+      ctxRef.current.strokeStyle = textcolor;
+  }, [textcolor])
+  
 
   React.useLayoutEffect(() => {
     const roughCanvas = rough.canvas(canvasRef.current);
@@ -24,32 +33,33 @@ const WhiteBoard = ({canvasRef, ctxRef, elements, setElements, tool}) => {
     }
     elements.forEach(element => {
       if(element.type==='pencil'){
-        roughCanvas.linearPath(element.path)
+        roughCanvas.linearPath(element.path, {stroke:element.stroke, strokeWidth:5, roughness:0})
       }
       else if(element.type==='line'){
-        roughCanvas.draw( roughGenerator.line(element.offsetX, element.offsetY, element.width, element.height))
+        roughCanvas.draw( roughGenerator.line(element.offsetX, element.offsetY, element.width, element.height, {stroke:element.stroke, strokeWidth:5, roughness:0}))
       }
       else if(element.type==='rect'){
-        roughCanvas.draw( roughGenerator.rectangle(element.offsetX, element.offsetY, element.width, element.height))
+        roughCanvas.draw( roughGenerator.rectangle(element.offsetX, element.offsetY, element.width, element.height, {stroke:element.stroke, strokeWidth:5, roughness:0}))
       }
     })
   }, [elements])
+
 
   const handleMouseDown =(e)=>{
     const {offsetX, offsetY} = e.nativeEvent;
       if(tool === 'pencil'){
         setElements((prev)=>{
-          return [...prev, {type:'pencil', offsetX, offsetY, path:[[offsetX, offsetY]], stroke:'black'}]
+          return [...prev, {type:'pencil', offsetX, offsetY, path:[[offsetX, offsetY]], stroke:textcolor}]
         })
       }
       else if(tool==='line'){
         setElements((prev)=>{
-          return [...prev, {type:'line', offsetX, offsetY, width:offsetX, height:offsetY, stroke:'black'}]
+          return [...prev, {type:'line', offsetX, offsetY, width:offsetX, height:offsetY, stroke:textcolor}]
         })
       }
       else if(tool ==='rect'){
         setElements((prev)=>{
-          return [...prev, {type:'rect', offsetX, offsetY, width:0, height:0, stroke:'black'}]
+          return [...prev, {type:'rect', offsetX, offsetY, width:0, height:0, stroke:textcolor}]
         })
       }
     setDrawing(true)

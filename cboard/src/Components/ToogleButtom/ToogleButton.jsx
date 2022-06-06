@@ -5,8 +5,9 @@ import Crop32Icon from '@mui/icons-material/Crop32';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Tooltip from '@mui/material/Tooltip';
+import ReactColorPicker from '../ColorPicker/ColorPicker';
 
-const ToggleButtonComponent = ({tool, setTool})=> {
+const ToggleButtonComponent = ({tool, setTool, setColor, textcolor})=> {
   
 
   const handleAlignment = (event, newAlignment) => {
@@ -14,7 +15,7 @@ const ToggleButtonComponent = ({tool, setTool})=> {
   };
 
   return (
-    <>
+    <div style={{display: 'flex',alignItems: 'center', justifyContent:'center', gap:'1rem'}}>
     <ToggleButtonGroup
       value={tool}
       exclusive
@@ -37,7 +38,11 @@ const ToggleButtonComponent = ({tool, setTool})=> {
       </ToggleButton>
       </Tooltip>
     </ToggleButtonGroup>
-    </>
+    <div style={{display: 'flex',alignItems: 'center', justifyContent: 'center', gap:'0.5rem'}}>
+    <p style={{color:'white', fontFamily:'Poppins'}}>Select Color:</p>
+    <ReactColorPicker setColor={setColor} textcolor={textcolor}/>
+    </div>
+    </div>
   );
 }
 

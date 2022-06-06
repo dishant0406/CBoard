@@ -21,7 +21,7 @@
 
 body {
   background-color: #3a3238 !important;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins', sans-serif !important;
   color: #f5e3e0;
 }
 body::before {
