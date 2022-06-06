@@ -5,11 +5,25 @@ import Typography from '@mui/material/Typography';
 import {Link} from 'react-router-dom'
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-
-
 import gift from '../../Assets/gift-dynamic-color.png'
 import JoinInnerIcon from '@mui/icons-material/JoinInner';
-const JoinRoomForm = () => {
+import { useHistory } from "react-router-dom";
+import humanId from 'human-id'
+
+const JoinRoomForm = ({socket, user, setUser}) => {
+  const [roomID, setRoomId] = React.useState('');
+  const [name, setName] = React.useState('');
+  const history = useHistory();
+
+  const handleRoomJoin = ()=>{
+    const roomData = {
+      name, roomID, userID:humanId(), host:true, presenter:true,
+    }
+    setUser(roomData)
+    socket.emit('userJoined', roomData)
+    history.push(`/${roomID}`);
+  }
+
   return (
     <Container sx={{display: 'flex',alignItems: 'center',justifyContent: 'center', height:'100vh'}}>
 
@@ -38,14 +52,18 @@ const JoinRoomForm = () => {
           fullWidth 
           variant="outlined"
           label="Enter Your Name"
+          value={name}
+          onChange={(e)=>setName(e.target.value)}
         />
       <TextField
           required
           fullWidth 
           variant="outlined"
           label="Enter Room Code"
+          value={roomID}
+          onChange={(e)=>setRoomId(e.target.value)}
         />
-    <Button variant="contained" sx={{width:'100%'}} endIcon={<JoinInnerIcon />}>
+    <Button onClick={handleRoomJoin} variant="contained" sx={{width:'100%'}} endIcon={<JoinInnerIcon />}>
         Join Room
       </Button>
       <Typography variant="h7">No room? Create a <Link to='/'>Room!</Link></Typography>

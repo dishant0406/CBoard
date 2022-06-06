@@ -11,7 +11,25 @@ import gift from '../../Assets/gift-dynamic-color.png'
 import AddIcon from '@mui/icons-material/Add';
 import Container from '@mui/material/Container';
 import { Link } from 'react-router-dom';
-const CreateRoomForm = () => {
+import humanId from 'human-id'
+import { useHistory } from "react-router-dom";
+
+const CreateRoomForm = ({socket, user, setUser}) => {
+  const [roomID, setRoomId] = React.useState(humanId())
+  const [name, setName] = React.useState('')
+  const history = useHistory();
+  
+  const handleGenerateRoom = (e)=>{
+    e.preventDefault()
+    if(name!=''){
+      const roomData = {
+        name, roomID, userID:humanId(), host:true, presenter:true,
+      }
+      setUser(roomData)
+      socket.emit('userJoined', roomData)
+      history.push(`/${roomID}`);
+    }
+  }
   return (
     <Container sx={{display: 'flex',alignItems: 'center',justifyContent: 'center', height:'100vh'}}>
 
@@ -40,6 +58,8 @@ const CreateRoomForm = () => {
           fullWidth 
           variant="outlined"
           label="Enter Your Name"
+          value={name}
+          onChange={(e)=> setName(e.target.value)}
         />
       <Grid container alignItems="center" justifyContent="center" spacing={{md:3, xs:1}} columns={{ xs: 4, md: 12 }}>
       <Grid item xs={7}>
@@ -48,20 +68,22 @@ const CreateRoomForm = () => {
           fullWidth 
           variant="outlined"
           label="Generate Room Code"
+          value={roomID}
           InputProps={{
             readOnly: true,
           }}
+          sx={{fontFamily: 'Poppins'}}
         />
         </Grid>
         <Grid item xs={5} >
         <ButtonGroup disableElevation variant="contained">
-      <Button startIcon={<AddIcon />}>Generate</Button>
+      <Button startIcon={<AddIcon />} onClick={()=>{setRoomId(humanId())}}>Generate</Button>
       <Button startIcon={<ContentCopyIcon />}>Copy</Button>
       
     </ButtonGroup>
     </Grid>
     </Grid>
-    <Button variant="contained" sx={{width:'100%'}} endIcon={<AddCircleIcon />}>
+    <Button onClick={handleGenerateRoom} variant="contained" sx={{width:'100%'}} endIcon={<AddCircleIcon />}>
         Generate Room
       </Button>
     <Typography variant="h7"><Link to='/join'>Want to join a Room? Join a Room!</Link></Typography>

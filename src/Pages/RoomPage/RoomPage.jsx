@@ -4,7 +4,9 @@ import Container from '@mui/material/Container';
 import ToggleButtonComponent from '../../Components/ToogleButtom/ToogleButton';
 import UndoRedo from '../../Components/UndoRedo/UndoRedo';
 import WhiteBoard from '../../Components/WhiteBoard/WhiteBoard';
-const RoomPage = () => {
+
+
+const RoomPage = ({socket}) => {
   const [tool, setTool] = React.useState('pencil');
   const canvasRef = React.useRef(null);
   const ctxRef = React.useRef(null);
@@ -12,6 +14,14 @@ const RoomPage = () => {
   const [textcolor, setColor] = React.useState('#000')
   const [historyArray, setHistoryArray] = React.useState([])
 
+  React.useEffect(()=>{
+    socket.on('arrayUpdate', data=>{
+      console.log(data)
+      setElements(data.elements)
+    })
+  },[])
+
+ 
 
   const handleClearCanvas = ()=>{
     const canvas = canvasRef.current;
@@ -30,6 +40,9 @@ const RoomPage = () => {
     setElements(prev=>{
       return prev.slice(0, prev.length-1)
     })
+
+    
+    socket.emit('boardUpdate', {elements})
   }
 
   const handleRedoClick = () => {
@@ -40,6 +53,9 @@ const RoomPage = () => {
     setHistoryArray(prev=>{
       return prev.slice(0, prev.length-1)
     })
+
+    
+    socket.emit('boardUpdate', {elements})
   }
 
   return (
@@ -47,7 +63,7 @@ const RoomPage = () => {
       <Typography variant="h3" sx={{fontFamily:'Poppins', fontWeight: '700', color:'#eee', marginTop:'1rem'}}>Collaborative WhiteBoard</Typography>
       <ToggleButtonComponent textcolor={textcolor} setColor={setColor} tool={tool} setTool={setTool}/>
       <UndoRedo handleRedoClick={handleRedoClick} handleUndoClick={handleUndoClick} elements={elements} historyArray={historyArray} handleClearCanvas={handleClearCanvas}/>
-      <WhiteBoard textcolor={textcolor} tool={tool} canvasRef={canvasRef} ctxRef={ctxRef} elements={elements} setElements={setElements}/>
+      <WhiteBoard socket={socket} textcolor={textcolor} tool={tool} canvasRef={canvasRef} ctxRef={ctxRef} elements={elements} setElements={setElements}/>
     </Container>
   )
 }

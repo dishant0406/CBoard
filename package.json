@@ -12,12 +12,16 @@
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.8.2",
     "@mui/material": "^5.8.2",
+    "human-id": "^4.0.0",
     "material-ui-color-picker": "^3.5.1",
     "rc-color-picker": "^1.2.6",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "react-hot-toast": "^2.2.0",
     "react-router-dom": "5.1",
-    "roughjs": "^4.5.2"
+    "roughjs": "^4.5.2",
+    "socket.io-client": "^4.5.1",
+    "uuid-readable": "^0.0.2"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",

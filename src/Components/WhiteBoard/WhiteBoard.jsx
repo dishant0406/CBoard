@@ -1,7 +1,7 @@
 import React from 'react'
 import rough from 'roughjs';
 
-const WhiteBoard = ({canvasRef, ctxRef, elements, setElements, tool, textcolor}) => {
+const WhiteBoard = ({canvasRef, ctxRef, elements, setElements, tool, textcolor, socket}) => {
 
   const [drawing, setDrawing] = React.useState(false);
 
@@ -88,6 +88,9 @@ const WhiteBoard = ({canvasRef, ctxRef, elements, setElements, tool, textcolor})
             }
           })
          })
+
+         
+      socket.emit('boardUpdate', {elements})
       }
       else if(tool ==='line'){
         setElements((prev)=>{
@@ -102,6 +105,8 @@ const WhiteBoard = ({canvasRef, ctxRef, elements, setElements, tool, textcolor})
             }
           })
          })
+         
+      socket.emit('boardUpdate', {elements})
       }
       else if(tool ==='rect'){
         setElements((prev)=>{
@@ -116,6 +121,8 @@ const WhiteBoard = ({canvasRef, ctxRef, elements, setElements, tool, textcolor})
             }
           })
          })
+         
+    socket.emit('boardUpdate', {elements})
       }
       
       }
@@ -124,6 +131,7 @@ const WhiteBoard = ({canvasRef, ctxRef, elements, setElements, tool, textcolor})
   const handleMouseUp =(e)=>{
    
     setDrawing(false)
+    socket.emit('boardUpdate', {elements})
   }
 
   return (
