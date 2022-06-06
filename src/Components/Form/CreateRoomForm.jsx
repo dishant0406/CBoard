@@ -13,11 +13,14 @@ import Container from '@mui/material/Container';
 import { Link } from 'react-router-dom';
 import humanId from 'human-id'
 import { useHistory } from "react-router-dom";
+import { toast } from 'react-hot-toast';
 
 const CreateRoomForm = ({socket, user, setUser}) => {
   const [roomID, setRoomId] = React.useState(humanId())
   const [name, setName] = React.useState('')
   const history = useHistory();
+
+
   
   const handleGenerateRoom = (e)=>{
     e.preventDefault()
@@ -78,7 +81,7 @@ const CreateRoomForm = ({socket, user, setUser}) => {
         <Grid item xs={5} >
         <ButtonGroup disableElevation variant="contained">
       <Button startIcon={<AddIcon />} onClick={()=>{setRoomId(humanId())}}>Generate</Button>
-      <Button startIcon={<ContentCopyIcon />}>Copy</Button>
+      <Button onClick={() => {navigator.clipboard.writeText(roomID); toast.success('RoomID copied!')}} startIcon={<ContentCopyIcon />}>Copy</Button>
       
     </ButtonGroup>
     </Grid>

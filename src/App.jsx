@@ -10,7 +10,8 @@ import io from 'socket.io-client'
 import toast, { Toaster } from 'react-hot-toast';
 
 
-const server = 'https://cboardapp.herokuapp.com/';
+// const server = 'https://cboardapp.herokuapp.com/';
+const server = 'http://localhost:5000';
 
 const connectionOptions = {
   "force new connection": true,
@@ -23,18 +24,21 @@ const socket = io(server, connectionOptions)
 
 
 const App = () => {
+  const [elements, setElements] = React.useState([])
   const [user, setUser] = React.useState(null)
 
   React.useEffect(()=>{
     socket.on('userConnected',(data)=>{
+      console.log(data)
       if(data.success) {
-        toast.success('User Joined')
+        toast.success(`${data.name} Joined`)
       }
       else{
         toast.error('Something went wrong')
       }
     })
   }, [])
+
 
   return (
     <BrowserRouter>
@@ -44,7 +48,7 @@ const App = () => {
         <Route path="/" exact><CreateRoomForm socket={socket} user={user} setUser={setUser} /></Route>
         <Route path="/join"><JoinRoomForm socket={socket} user={user} setUser={setUser}/></Route>
         <Route path="/:roomId">
-          {user ? <RoomPage socket={socket}/> : <Redirect to='/'/>}
+          {user ? <RoomPage socket={socket} elements={elements} setElements={setElements}/> : <Redirect to='/'/>}
         </Route>
         </Switch>
       </Container>

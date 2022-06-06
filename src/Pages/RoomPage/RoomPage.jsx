@@ -4,13 +4,14 @@ import Container from '@mui/material/Container';
 import ToggleButtonComponent from '../../Components/ToogleButtom/ToogleButton';
 import UndoRedo from '../../Components/UndoRedo/UndoRedo';
 import WhiteBoard from '../../Components/WhiteBoard/WhiteBoard';
+import toast from 'react-hot-toast';
 
 
-const RoomPage = ({socket}) => {
+const RoomPage = ({socket, elements, setElements}) => {
   const [tool, setTool] = React.useState('pencil');
   const canvasRef = React.useRef(null);
   const ctxRef = React.useRef(null);
-  const [elements, setElements] = React.useState([])
+  
   const [textcolor, setColor] = React.useState('#000')
   const [historyArray, setHistoryArray] = React.useState([])
 
@@ -21,8 +22,7 @@ const RoomPage = ({socket}) => {
     })
   },[])
 
- 
-
+  
   const handleClearCanvas = ()=>{
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
