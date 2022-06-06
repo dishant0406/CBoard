@@ -1,10 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
 
-body{
-  font-family: 'Poppins', sans-serif;
-}
 
-.loading {
+
+/* .loading {
   background: repeating-linear-gradient(60deg, #eee 0%, #eee 1%, #75c4fd 1%, #75c4fd 2%);
   animation: loading 20s ease-in-out infinite;
   background-size: 500% 500%;
@@ -19,4 +17,34 @@ body{
   100% {
     background-position: 0% 50%;
  }
+} */
+
+body {
+  background-color: #3a3238 !important;
+  font-family: 'Poppins', sans-serif;
+  color: #f5e3e0;
+}
+body::before {
+  content: '';
+  min-height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient(135deg, pink, #d282a6);
+  clip-path: circle(30% at right 70%);
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+body::after {
+  content: '';
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient(135deg, pink, blue);
+  clip-path: circle(30% at 120px 80px);
+  width: 100%;
+  height: 100%;
+  z-index: -1;
 }
