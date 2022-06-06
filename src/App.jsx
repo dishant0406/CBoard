@@ -10,8 +10,8 @@ import io from 'socket.io-client'
 import toast, { Toaster } from 'react-hot-toast';
 
 
-// const server = 'https://cboardapp.herokuapp.com/';
-const server = 'http://localhost:5000';
+const server = 'https://cboardapp.herokuapp.com/';
+// const server = 'http://localhost:5000';
 
 const connectionOptions = {
   "force new connection": true,
